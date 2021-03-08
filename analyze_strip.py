@@ -5,12 +5,15 @@ from scipy.signal import find_peaks
 
 PEAK_DISTANCE = 400
 
-def analyze_strip(dir):
+def analyze_strip(filestr):
+    #convert string data to numpy array
+    npimg = np.fromstring(filestr, np.uint8)
+    # convert numpy array to image
+    img = cv.imdecode(npimg, cv.IMREAD_UNCHANGED)
     # Load the image
-    img = cv.imread(dir)
+    #img = cv.imread(dir)
     if img is None:
         print ('Error opening image')
-        print ('Usage: smoothing.py [image_name -- default ../data/lena.jpg] \n')
         return -1
 
     # cv.namedWindow("Original Image", cv.WINDOW_AUTOSIZE)

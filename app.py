@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
-from PIL import Image
-import analyze_strip
+from analyze_strip import analyze_strip
 
 app = Flask(__name__)
 
@@ -45,8 +44,9 @@ def post_something():
 
 @app.route('/strip/', methods=['POST'])
 def analyze_strip_endpoint():
-    file = request.files['strip']
-    result = analyze_strip(file)
+    #read image file string data
+    filestr = request.files['strip'].read()
+    result = analyze_strip(filestr)
 
     if result == -1:
         return jsonify({
