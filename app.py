@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from PIL import Image
+import analyze_strip
 
 app = Flask(__name__)
 
@@ -43,18 +44,18 @@ def post_something():
         })
 
 @app.route('/strip/', methods=['POST'])
-def analyze_strip():
+def analyze_strip_endpoint():
     file = request.files['strip']
-    # Read the image via file.stream
-    img = Image.open(file.stream)
-    if img:
+    result = analyze_strip(file)
+
+    if result == -1:
         return jsonify({
-            'msg': 'success', 
-            'size': [img.width, img.height]
+            "ERROR": "no strip found, please send a strip."
         })
     else:
         return jsonify({
-            "ERROR": "no strip found, please send a strip."
+            'msg': 'success', 
+            'result': result
         })
 
 # A welcome message to test our server
